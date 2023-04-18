@@ -53,6 +53,10 @@ const TodoList = () => {
     );
   };
 
+  const reset = () => {
+    setTodos([]);
+  };
+
   // 컴포넌트를 렌더링합니다.
   return (
     <div className={styles.container}>
@@ -74,7 +78,7 @@ const TodoList = () => {
         onChange={(e) => setInput(e.target.value)}
       />
       {/* 할 일을 추가하는 버튼입니다. */}
-      <div class="grid">
+      <div className="flex justify-end mt-2 mb-6">
         <button
           // className={styles.addButton}
           // -- addButton CSS code --
@@ -91,12 +95,20 @@ const TodoList = () => {
           //   background-color: #fff;
           //   color: #0070f3;
           // }
-          className="shadow-lg w-40 justify-self-end p-1 mb-4 bg-blue-500 text-white border border-blue-500 rounded hover:bg-white hover:text-blue-500"
+          className="shadow-lg w-40 p-1 mr-4 bg-blue-500 text-white border border-blue-500 rounded hover:bg-white hover:text-blue-500"
           onClick={addTodo}
         >
           Add Todo
         </button>
+        {/* 할 일 목록 초기화 버튼 */}
+        <button
+          className="shadow-lg w-40 p-1 bg-red-500 text-white border border-red-500 rounded hover:bg-white hover:text-red-500"
+          onClick={reset}
+        >
+          Reset
+        </button>
       </div>
+
       {/* 할 일 목록을 렌더링합니다. */}
       <ul>
         {todos.map((todo) => (
