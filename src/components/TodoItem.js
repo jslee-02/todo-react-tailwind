@@ -9,22 +9,36 @@ import styles from "@/styles/TodoList.module.css";
 
 // TodoItem 컴포넌트를 정의합니다.
 const TodoItem = ({ todo, onToggle, onDelete }) => {
+  // Parse timestamp
+  const timestamp = new Date(todo.timestamp);
+  const offsetMs = timestamp.getTimezoneOffset() * 60 * 1000;
+  const dateLocal = new Date(timestamp.getTime() - offsetMs);
+  const timestampString = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
+
   // 각 할 일 항목을 렌더링합니다.
   return (
-    <li className={styles.todoItem}>
+    <li className="flex justify-end mb-2.5">
       {/* 체크박스를 렌더링하고, 체크박스의 상태를 할 일의 완료 상태와 동기화합니다.
           체크박스의 상태가 변경되면 onToggle 함수를 호출하여 완료 상태를 업데이트합니다. */}
       <input type="checkbox" checked={todo.completed} onChange={onToggle} />
 
       {/* 할 일의 텍스트를 렌더링하고, 완료 상태에 따라 텍스트에 취소선과 색상을 적용합니다. */}
       <span
-        className={styles.todoText}
+        className="basis-[54.36%] ml-2.5"
         style={{
           textDecoration: todo.completed ? "line-through" : "none",
           color: todo.completed ? "#a3a3a3" : "black"
         }}
       >
         {todo.text}
+      </span>
+
+      {/* 할 일의 타임스탬프를 렌더링하고, 완료 상태에 따라 텍스트에 색상을 적용합니다. */}
+      <span
+        className="basis-[30%] mr-2.5"
+        style={{ color: todo.completed ? "#a3a3a3" : "black" }}
+      >
+        {timestampString}
       </span>
 
       {/* 삭제 버튼을 렌더링하고, 클릭 시 onDelete 함수를 호출하여 해당 할 일을 삭제합니다. */}
