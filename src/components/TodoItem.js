@@ -17,10 +17,10 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
 
   // 각 할 일 항목을 렌더링합니다.
   return (
-    <li className="flex justify-end mb-2.5">
+    <li className="flex justify-end items-start mb-3">
       {/* 체크박스를 렌더링하고, 체크박스의 상태를 할 일의 완료 상태와 동기화합니다.
           체크박스의 상태가 변경되면 onToggle 함수를 호출하여 완료 상태를 업데이트합니다. */}
-      <input type="checkbox" checked={todo.completed} onChange={onToggle} />
+      <input className="mt-1.5" type="checkbox" checked={todo.completed} onChange={onToggle} />
 
       {/* 할 일의 텍스트를 렌더링하고, 완료 상태에 따라 텍스트에 취소선과 색상을 적용합니다. */}
       <span
@@ -35,7 +35,7 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
 
       {/* 할 일의 타임스탬프를 렌더링하고, 완료 상태에 따라 텍스트에 색상을 적용합니다. */}
       <span
-        className="basis-[30%] mr-2.5"
+        className="basis-[30%] ml-2.5 mr-2.5"
         style={{ color: todo.completed ? "#a3a3a3" : "black" }}
       >
         {timestampString}

@@ -148,8 +148,8 @@ const TodoList = () => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      {/* 할 일을 추가하는 버튼입니다. */}
-      <div className="flex justify-end mt-2 mb-6">
+      <div className="flex justify-end mt-2 mb-8">
+        {/* 할 일을 추가하는 버튼입니다. */}
         <button
           // className={styles.addButton}
           // -- addButton CSS code --
