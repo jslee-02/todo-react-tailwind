@@ -4,6 +4,7 @@
   할 일 목록의 추가, 삭제, 완료 상태 변경 등의 기능을 구현하였습니다.
 */
 import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import TodoItem from "@/components/TodoItem";
 import styles from "@/styles/TodoList.module.css";
 
@@ -18,6 +19,7 @@ import {
   updateDoc,
   deleteDoc,
   orderBy,
+  where
 } from "firebase/firestore";
 
 const todoCollection = collection(db, "todos");
@@ -28,9 +30,16 @@ const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
+  const { data } = useSession();
+
   const getTodos = async () => {
     // Firestore 쿼리를 만듭니다.
-    const q = query(todoCollection, orderBy("timestamp"));
+    if (!data?.user?.name) return;
+    const q = query(
+      todoCollection,
+      where("userId", "==", data?.user?.id),
+      orderBy("timestamp")
+    );
 
     // Firestore 에서 할 일 목록을 조회합니다.
     const results = await getDocs(q);
@@ -48,7 +57,7 @@ const TodoList = () => {
 
   useEffect(() => {
     getTodos();
-  }, []);
+  }, [data]);
 
   // addTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
   const addTodo = async () => {
@@ -65,6 +74,7 @@ const TodoList = () => {
     // Firestore 에 추가한 할 일을 저장합니다.
     const currTime = Date.now();
     const docRef = await addDoc(todoCollection, {
+      userId: data?.user?.id,
       text: input,
       timestamp: currTime,
       completed: false,
@@ -108,7 +118,8 @@ const TodoList = () => {
   };
 
   const reset = async () => {
-    const q = query(todoCollection);
+    if (!data?.user?.name) return;
+    const q = query(todoCollection, where("userId", "==", data?.user?.id));
     const results = await getDocs(q);
     results.docs.forEach((doc) => {
       deleteDoc(doc.ref);
@@ -121,7 +132,7 @@ const TodoList = () => {
   return (
     <div className={styles.container}>
       <h1 className="text-xl mb-4 font-bold underline underline-offset-4 decoration-wavy">
-        Todo List
+        {data?.user?.name}의 Todo List
       </h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
       <input
