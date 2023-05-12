@@ -11,7 +11,7 @@ const AdminTodoItem = ({ todo }) => {
   // 각 할 일 항목을 렌더링합니다.
   return [
     <div key = "userId" style={{ color: todo.completed ? "#a3a3a3" : "black" }}>
-      {todo.userIdZ}
+      {todo.userId}
     </div>,
     <div
       key = "content"
